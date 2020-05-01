@@ -267,4 +267,5 @@ class Rubik_Cube{
         this.test += 0.6
         pop();
     }
+    // change!!!
 }
