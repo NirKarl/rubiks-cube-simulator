@@ -1,13 +1,19 @@
 class Matrix{
-    constructor(rows, cols){
-        this.rows = rows
-        this.cols = cols
-        this._matrix = []
-        for (var i = 0; i < rows; i++){
-            this._matrix.push([]);
-            for (var j = 0; j < cols; j++){
-                this._matrix[i].push(null);
-            }
+    constructor(rows=3, cols=3, matrix=null){
+        if (matrix === null){
+            this.rows = rows
+            this.cols = cols
+            this._matrix = []
+            for (var i = 0; i < rows; i++){
+                this._matrix.push([]);
+                for (var j = 0; j < cols; j++){
+                    this._matrix[i].push(null);
+                }
+        }
+        } else {
+            this._matrix = matrix
+            this.rows = matrix.length
+            this.cols = matrix[0].length
         }
         this.detVal;
         this.matChange = true;
@@ -56,7 +62,7 @@ class Matrix{
     }
 
     add(other){
-        if (other.rows !== this.rows || other.cols !== this.cols){
+        if (other.length !== this.rows || other[0].length !== this.cols){
             return null;
         } else {
             let add_mat = []
@@ -71,17 +77,18 @@ class Matrix{
     }
 
     mult(other){
-        if (other.rows !== this.cols){
+        if (other.length !== this.cols){
             return null
         } else {
             let mult_mat = []
             for (var i = 0; i < this.rows; i++){
                 mult_mat.push([])
-                for (var j = 0; j < other.cols; j++){
+                for (var j = 0; j < other[0].length; j++){
                     mult_mat[i].push(0);
                     for (var k = 0; k < this.cols; k++){
-                        mult_mat[i][j] += (this._matrix[i][k] * other.matrix[k][j]);
+                        mult_mat[i][j] += (this._matrix[i][k] * other[k][j]);
                     }
+                    mult_mat[i][j] = Math.abs(mult_mat[i][j]) <= 0.0000000001 ? 0 : mult_mat[i][j]
                 }
             }
             return mult_mat;
@@ -89,27 +96,36 @@ class Matrix{
     }
 
     inverse(){
-        let AdjMat = [];
-        for (var i = 0; i < this.rows; i++){
-            AdjMat.push([]);
-            for (var j = 0; j < this.cols; j++){
-                AdjMat[i].push(null);
-            }
-        } 
-        for (var i = 0; i < this.rows; i++){
-            for (var j = 0; j < this.cols; j++){
-                let smallMat = [[], []]
-                for (var k = 0; k < this.rows; k++){
-                    for (var l = 0; l < this.cols; l++){
-                        if (k !== i && l !== j){
-                            smallMat[0].push(this._matrix[k][l]);
+        if (this.det !== 0 && this.det !== null){
+            let AdjMat = [];
+            for (var i = 0; i < this.rows; i++){
+                AdjMat.push([]);
+                for (var j = 0; j < this.cols; j++){
+                    AdjMat[i].push(null);
+                }
+            } 
+            for (var i = 0; i < this.rows; i++){
+                for (var j = 0; j < this.cols; j++){
+                    let smallMat = [[], []];
+                    let x = 0;
+                    let swithX = false;
+                    for (var k = 0; k < this.rows; k++){
+                        for (var l = 0; l < this.cols; l++){
+                            if (k !== i && l !== j){
+                                smallMat[x].push(this._matrix[k][l]);
+                                swithX = true;
+                            }
+                        }
+                        if (swithX){
+                            x = 1;
                         }
                     }
+                    AdjMat[j][i] = ((this.det2(smallMat) * ((i+j)%2 === 0 ? 1 : -1)) / this.det);
                 }
-                AdjMat[j][i] = this.det2(smallMat) * ((i+j)%2 === 0 ? 1 : -1);
             }
+            return AdjMat;
         }
-        return AdjMat;
+        return null
     }
 
     det2(matrix){
@@ -124,24 +140,13 @@ mat1.matrix = [
     [2, 8, 7]
 ];
 
-mat2 = new Matrix(3, 3);
-mat2.matrix = [
-    [0, 2, 0],
-    [4, 2, 1],
-    [0, 1, 3]
-];
+mat2 = new Matrix(3, 3, [[0, 2, 0],[4, 2, 1],[0, 1, 3]]);
+// mat2.matrix = [
+//     [0, 2, 0],
+//     [4, 2, 1],
+//     [0, 1, 3]
+// ];
 
-mat3 = new Matrix(3, 2);
-mat3.matrix = [
-    [3, 4],
-    [7, 2],
-    [5, 9]
-];
-
-mat4 = new Matrix(2, 3);
-mat4.matrix = [
-    [3, 1, 5],
-    [6, 9, 7]
-];
-
-console.log(mat2.inverse());
+inv2 = mat2.inverse();
+console.log(mat2.mult(inv2))
+// console.log(mat2.matrix, inv2, mat2.det)
