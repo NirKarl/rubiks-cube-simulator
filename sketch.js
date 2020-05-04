@@ -19,6 +19,7 @@ const yale = [14, 77, 146];
 const globalColors = [white, yellow, red, orange, blue, green];
 // const globalColors = [teal, lightBlue, turquise, blue, cyan, yale];
 
+
 // ***************** GLOBAL CUBE SIZES *******************
 const space = 3;
 const sideSize = 60;
@@ -56,18 +57,18 @@ function draw() {
     rectMode(CENTER);
 
     c1.drawCube();
-    push();
-    stroke(255, 0, 0);
-    line(-500, 0, 0, 500, 0, 0);
-    pop();
-    push();
-    stroke(0, 255, 0);
-    line(0, -500, 0, 0, 500, 0);
-    pop();
-    push();
-    stroke(0, 0, 255);
-    line(0, 0, -500, 0, 0, 500);
-    pop();
+    // push();
+    // stroke(255, 0, 0);
+    // line(-500, 0, 0, 500, 0, 0);
+    // pop();
+    // push();
+    // stroke(0, 255, 0);
+    // line(0, -500, 0, 0, 500, 0);
+    // pop();
+    // push();
+    // stroke(0, 0, 255);
+    // line(0, 0, -500, 0, 0, 500);
+    // pop();
 }
 
 function mousePressed(){
@@ -267,5 +268,17 @@ class Rubik_Cube{
         this.test += 0.6
         pop();
     }
-    // change!!!
+}
+
+function find_line(pointA, pointB){
+    const m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0]);
+    const b = pointA[1] - m*pointA[0];
+    return {
+        m: m,
+        b: b
+    };
+}
+
+function is_in_face(points, mPos){
+    // skip
 }

@@ -1,3 +1,26 @@
+// **************** AXIS ROTATION MATRICES *****************
+function Rx(ang, ccw=true){
+    if ccw !== true{
+        ang != -1;
+    }
+    return new Matrix(3, 3, [[1, 0, 0][0, cos(ang), -sin(ang)][0, sin(ang), cos(ang)]]);
+}
+
+function Ry(ang, ccw=true){
+    if ccw !== true{
+        ang != -1;
+    }
+    return new Matrix(3, 3, [[cos(ang), 0, sin(ang)][0, 1, 0][-sin(ang), 0, cos(ang)]]);
+}
+
+function Rz(ang, ccw=true){
+    if ccw !== true{
+        ang != -1;
+    }
+    return new Matrix(3, 3, [[cos(ang), -sin(ang), 0][sin(ang), cos(ang), 0][0, 0, 1]]);
+}
+
+
 class Matrix{
     constructor(rows=3, cols=3, matrix=null){
         if (matrix === null){
@@ -103,7 +126,7 @@ class Matrix{
                 for (var j = 0; j < this.cols; j++){
                     AdjMat[i].push(null);
                 }
-            } 
+            }
             for (var i = 0; i < this.rows; i++){
                 for (var j = 0; j < this.cols; j++){
                     let smallMat = [[], []];
@@ -131,6 +154,26 @@ class Matrix{
     det2(matrix){
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
     }
+}
+
+function rotate_vector(vector, yAngle){
+    const a = vector[0];
+    const b = vector[1];
+    const c = vector[2];
+    let vec = Matrix(1, 3, [[a], [b], [c]]);
+    const xAngle = 90 - arctan2(b, c);
+    const xRotation = Rx(xAngle, false);
+    vec = vec().mult(xRotation);
+    const bTag = aqrt(vector[1]**2 + vector[2]**2)
+    const xyVec = (a, bTag, 0);
+    const zAngle = 90 - arctan2(bTag, a);
+    const zRotation = Rz(zAngle);
+    vec = vec().mult(zRotation);
+    return vac
+}
+
+function translate_point(point, vector){
+    return vector.add([point[0], point[1], 0]);
 }
 
 mat1 = new Matrix(3, 3);
