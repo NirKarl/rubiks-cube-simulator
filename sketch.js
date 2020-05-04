@@ -269,16 +269,3 @@ class Rubik_Cube{
         pop();
     }
 }
-
-function find_line(pointA, pointB){
-    const m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0]);
-    const b = pointA[1] - m*pointA[0];
-    return {
-        m: m,
-        b: b
-    };
-}
-
-function is_in_face(points, mPos){
-    // skip
-}

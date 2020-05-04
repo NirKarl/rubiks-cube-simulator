@@ -193,3 +193,43 @@ mat2 = new Matrix(3, 3, [[0, 2, 0],[4, 2, 1],[0, 1, 3]]);
 inv2 = mat2.inverse();
 console.log(mat2.mult(inv2))
 // console.log(mat2.matrix, inv2, mat2.det)
+
+function find_line_equ(pointA, pointB){
+    const m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0]);
+    const b = pointA[1] - m*pointA[0];
+    return {
+        m: m,
+        b: b
+    };
+}
+
+function is_in_triangle(points, mPos){
+    for (let i = 0; i < 3; i++){
+        let equ = find_line_equ([points[i%3], points[(i+1)%3]]);
+        let m = equ[m];
+        let b = equ[b];
+        refPointSide = m*points[(i+2)%3][0] + b - points[(i+2)%3][1];
+        mouseSide = m*mPos[0] + b - mPos[1];
+        if (!(mouseSide * refPointSide > 0)){
+            return false;
+    }
+    return true;
+}
+
+function is_in_face(points, mPos){
+    let xAvg;
+    let yAvg;
+    for (var i = 0; i < points.length; i++){
+        xAvg += points[i][0];
+        yAvg += points[i][1];
+    }
+    xAvg /= points.length;
+    yAvg /= points.length;
+    centerPoint = [xAvg, yAvg];
+    for (var i = 0; i < points.length; i ++){
+        if !(is_in_triangle([points[i], points[(i+1)%points.length], centerPoint], mPos)){
+            return true;
+        }
+        return false;
+    }
+}
