@@ -1,23 +1,23 @@
 // **************** AXIS ROTATION MATRICES *****************
 function Rx(ang, ccw=true){
-    if ccw !== true{
-        ang != -1;
+    if (ccw !== true){
+        ang *= -1;
     }
-    return new Matrix(3, 3, [[1, 0, 0][0, cos(ang), -sin(ang)][0, sin(ang), cos(ang)]]);
+    return new Matrix(3, 3, [[1, 0, 0], [0, cos(ang), -sin(ang)], [0, sin(ang), cos(ang)]]);
 }
 
 function Ry(ang, ccw=true){
-    if ccw !== true{
-        ang != -1;
+    if (ccw !== true){
+        ang *= -1;
     }
-    return new Matrix(3, 3, [[cos(ang), 0, sin(ang)][0, 1, 0][-sin(ang), 0, cos(ang)]]);
+    return new Matrix(3, 3, [[cos(ang), 0, sin(ang)], [0, 1, 0], [-sin(ang), 0, cos(ang)]]);
 }
 
 function Rz(ang, ccw=true){
-    if ccw !== true{
-        ang != -1;
+    if (ccw !== true){
+        ang *= -1;
     }
-    return new Matrix(3, 3, [[cos(ang), -sin(ang), 0][sin(ang), cos(ang), 0][0, 0, 1]]);
+    return new Matrix(3, 3, [[cos(ang), -sin(ang), 0], [sin(ang), cos(ang), 0], [0, 0, 1]]);
 }
 
 
@@ -92,7 +92,7 @@ class Matrix{
             for (var i = 0; i < this.rows; i++){
                 add_mat.push([])
                 for (var j = 0; j < this.cols; j++){
-                    add_mat[i].push(this._matrix[i][j] + other.matrix[i][j]);
+                    add_mat[i].push(this._matrix[i][j] + other[i][j]);
                 }
             }
             return add_mat;
@@ -101,6 +101,7 @@ class Matrix{
 
     mult(other){
         if (other.length !== this.cols){
+            console.log(other.length, this.cols);
             return null
         } else {
             let mult_mat = []
@@ -160,43 +161,26 @@ function rotate_vector(vector, yAngle){
     const a = vector[0];
     const b = vector[1];
     const c = vector[2];
-    let vec = Matrix(1, 3, [[a], [b], [c]]);
-    const xAngle = 90 - arctan2(b, c);
+    // console.log([[a], [b], [c]][0].length);
+    let vec = new Matrix(1, 3, [[a], [b], [c]]);
+    const xAngle = 90 - Math.atan2(b, c);
     const xRotation = Rx(xAngle, false);
-    vec = vec().mult(xRotation);
-    const bTag = aqrt(vector[1]**2 + vector[2]**2)
+    vec = xRotation.mult(vec.matrix);
+    const bTag = sqrt(vector[1]**2 + vector[2]**2)
     const xyVec = (a, bTag, 0);
-    const zAngle = 90 - arctan2(bTag, a);
+    const zAngle = 90 - Math.atan2(bTag, a);
     const zRotation = Rz(zAngle);
-    vec = vec().mult(zRotation);
-    return vac
+    vec = zRotation.mult(vec);
+    return vec
 }
 
 function translate_point(point, vector){
-    return vector.add([point[0], point[1], 0]);
+    return vector.add([[point[0]], [point[1]], [0]]);
 }
 
-mat1 = new Matrix(3, 3);
-mat1.matrix = [
-    [6, 1, 1],
-    [4, -2, 5],
-    [2, 8, 7]
-];
-
-mat2 = new Matrix(3, 3, [[0, 2, 0],[4, 2, 1],[0, 1, 3]]);
-// mat2.matrix = [
-//     [0, 2, 0],
-//     [4, 2, 1],
-//     [0, 1, 3]
-// ];
-
-inv2 = mat2.inverse();
-console.log(mat2.mult(inv2))
-// console.log(mat2.matrix, inv2, mat2.det)
-
 function find_line_equ(pointA, pointB){
-    const m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0]);
-    const b = pointA[1] - m*pointA[0];
+    let m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0]);
+    let b = pointA[1] - m*pointA[0];
     return {
         m: m,
         b: b
@@ -205,20 +189,21 @@ function find_line_equ(pointA, pointB){
 
 function is_in_triangle(points, mPos){
     for (let i = 0; i < 3; i++){
-        let equ = find_line_equ([points[i%3], points[(i+1)%3]]);
-        let m = equ[m];
-        let b = equ[b];
+        let equ = find_line_equ(points[i%3], points[(i+1)%3]);
+        let m = equ.m;
+        let b = equ.b;
         refPointSide = m*points[(i+2)%3][0] + b - points[(i+2)%3][1];
         mouseSide = m*mPos[0] + b - mPos[1];
-        if (!(mouseSide * refPointSide > 0)){
+        if (mouseSide * refPointSide <= 0){
             return false;
+        }
+        return true;
     }
-    return true;
 }
 
 function is_in_face(points, mPos){
-    let xAvg;
-    let yAvg;
+    let xAvg = 0;
+    let yAvg = 0;
     for (var i = 0; i < points.length; i++){
         xAvg += points[i][0];
         yAvg += points[i][1];
@@ -227,7 +212,7 @@ function is_in_face(points, mPos){
     yAvg /= points.length;
     centerPoint = [xAvg, yAvg];
     for (var i = 0; i < points.length; i ++){
-        if !(is_in_triangle([points[i], points[(i+1)%points.length], centerPoint], mPos)){
+        if ((is_in_triangle([points[i], points[(i+1)%points.length], centerPoint], mPos))){
             return true;
         }
         return false;

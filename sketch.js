@@ -1,4 +1,3 @@
-
 // ********** COLORS **************
 const blue = [0, 0, 200];
 const red = [200, 0, 0];
@@ -57,25 +56,32 @@ function draw() {
     rectMode(CENTER);
 
     c1.drawCube();
-    // push();
-    // stroke(255, 0, 0);
-    // line(-500, 0, 0, 500, 0, 0);
-    // pop();
-    // push();
-    // stroke(0, 255, 0);
-    // line(0, -500, 0, 0, 500, 0);
-    // pop();
-    // push();
-    // stroke(0, 0, 255);
-    // line(0, 0, -500, 0, 0, 500);
-    // pop();
+    // drawAxes();
+}
+
+function drawAxes(){
+    push();
+    stroke(255, 0, 0);
+    line(-500, 0, 0, 500, 0, 0);
+    pop();
+    push();
+    stroke(0, 255, 0);
+    line(0, -500, 0, 0, 500, 0);
+    pop();
+    push();
+    stroke(0, 0, 255);
+    line(0, 0, -500, 0, 0, 500);
+    pop();
 }
 
 function mousePressed(){
     // ['left', 'down', 'right', 'top']
     button = mouseButton;
     if (button===LEFT){
-            c1.rotateFace('front', ['left', 'down', 'right', 'top'], (key==='Shift' && keyIsPressed));
+        face = c1.checkFace([mouseX, mouseY]);
+        if (face !== null){
+            c1.rotateFace(face, ['left', 'down', 'right', 'top'], (key==='Shift' && keyIsPressed));
+        }
     }
 }
 
@@ -182,6 +188,15 @@ class Rubik_Cube{
             'left': []
         };
 
+        this.turnByFace = {
+            'top': ['left', 'back', 'right', 'front'],
+            'down': ['left', 'front', 'right', 'back'],
+            'front': ['left', 'down', 'right', 'top'],
+            'back': ['left', 'top', 'right', 'down'],
+            'right': ['back', 'down', 'front', 'top'],
+            'left': ['back', 'top', 'front', 'down']
+        }
+
         this.cubes = [];
         var FBOptions = ['front', 'defualt', 'back'];
         var RLOptions = ['right', 'defualt', 'left'];
@@ -212,9 +227,6 @@ class Rubik_Cube{
                 }
             }
         }
-        // for (var pos of this.poses){
-        //     console.log("pos:", pos);
-        // }
     }
 
     drawCube(face, otherFaces, cw=true){
@@ -267,5 +279,29 @@ class Rubik_Cube{
         }
         this.test += 0.6
         pop();
+    }
+
+    checkFace(mPos){
+        const facePoints = {
+            'front': [this.poses[0], this.poses[2], this.poses[8], this.poses[6]],
+            'back': [this.poses[0], this.poses[6], this.poses[24], this.poses[18]],
+            'right': [this.poses[0], this.poses[2], this.poses[20], this.poses[18]],
+            'left': [this.poses[18], this.poses[20], this.poses[26], this.poses[24]],
+            'top': [this.poses[2], this.poses[8], this.poses[26], this.poses[20]],
+            'down': [this.poses[6], this.poses[8], this.poses[26], this.poses[24]]
+        }
+        for (let [key, value] of Object.entries(facePoints)) {
+            let rotation_vec = rotate_vector([-camX, -camY, camZ], camBeta);
+            let vec = new Matrix(1, 1, rotation_vec)
+            let points = [];
+            for (var i = 0; i < 4; i++){
+                points.push(translate_point(value[i], vec))
+            }
+            if (is_in_face(points, mPos)){
+                console.log(key);
+               return key;
+            }
+        }
+        return null
     }
 }
