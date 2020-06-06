@@ -32,6 +32,7 @@ function setup() {
     cam.setPosition(0, 0, camDist);
     c1 = new Rubik_Cube();
     r = (width/2) / tan(30/2);
+    console.log(r);
     camX = 0;
     camY = 0;
     camZ = 600;
@@ -80,7 +81,13 @@ function mousePressed(){
     if (button===LEFT){
         face = c1.checkFace([mouseX, mouseY]);
         if (face !== null){
-            c1.rotateFace(face, ['left', 'down', 'right', 'top'], (key==='Shift' && keyIsPressed));
+            c1.rotateFace(face, (key==='Shift' && keyIsPressed));
+            // c1.rotateFace('back', (key==='Shift' && keyIsPressed));
+            // c1.rotateFace('front', (key==='Shift' && keyIsPressed));
+            // c1.rotateFace('left', (key==='Shift' && keyIsPressed));
+            // c1.rotateFace('right', (key==='Shift' && keyIsPressed));
+            // c1.rotateFace('down', (key==='Shift' && keyIsPressed));
+            // c1.rotateFace('top', (key==='Shift' && keyIsPressed));
         }
     }
 }
@@ -235,8 +242,27 @@ class Rubik_Cube{
         }
     }
 
-    rotateFace(face, otherFaces, cw=true){
+    rotateFace(face, cw=true){
         push();
+        console.log(face);
+        let otherFaces;
+        if (face === 'front' || face === 'back'){
+            otherFaces = ['left', 'down', 'right', 'top'];
+            if (face === 'front'){
+                cw = !cw;
+            }
+        } else if (face === 'right' || face === 'left'){
+            otherFaces = ['top', 'front', 'down', 'back'];
+            if (face === 'right'){
+                cw = !cw;
+            }
+        } else if (face === 'top' || face === 'down'){
+            otherFaces = ['left', 'front', 'right', 'back'];
+            if (face === 'top'){
+                cw = !cw;
+            }
+        }
+
         let temp = {
             'front': [],
             'back': [],
@@ -245,6 +271,7 @@ class Rubik_Cube{
             'top': [],
             'down': []
         }
+
         for (var i = 0;  i < this.faces[face].length; i++){
             if (i < 3){
                 temp[otherFaces[0]].push(this.faces[face][i].sides[otherFaces[1]]);
@@ -277,7 +304,6 @@ class Rubik_Cube{
                 j++;
             }
         }
-        this.test += 0.6
         pop();
     }
 
@@ -291,15 +317,17 @@ class Rubik_Cube{
             'down': [this.poses[6], this.poses[8], this.poses[26], this.poses[24]]
         }
         for (let [key, value] of Object.entries(facePoints)) {
-            let rotation_vec = rotate_vector([-camX, -camY, camZ], camBeta);
-            let vec = new Matrix(1, 1, rotation_vec)
-            let points = [];
-            for (var i = 0; i < 4; i++){
-                points.push(translate_point(value[i], vec))
-            }
-            if (is_in_face(points, mPos)){
+            // // let rotation_vec = rotate_vector([-camX, -camY, camZ], camBeta);
+            // // let vec = new Matrix(1, 1, rotation_vec)
+            // let vec = new Matrix(1, 1, [[-camX], [-camY], [camZ]])
+            // let points = [];
+            // for (var i = 0; i < 4; i++){
+            //     let temp = translate_point(value[i], vec)
+            //     points.push(value)
+            // }
+            if (is_in_face(value, mPos)){
                 console.log(key);
-               return key;
+                return key;
             }
         }
         return null

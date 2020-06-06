@@ -21,24 +21,91 @@ function Rz(ang, ccw=true){
 }
 
 
+class Vector{
+    constructor(size, vector=null){
+        if (data === null){
+            this.size = size;
+            this._vector = [];
+            for (var i = 0; i < size; i++){
+                this._vector.push(null);
+            this.matrix = [];
+            }
+        } else{
+            this.size = vector.length;
+            this._vector = vector;
+            this.matrix = [];
+            for (var i = 0; i < size; i++){
+                matrix.push([this._vector[i]]);
+            }
+        }
+    }
+
+    get vector(){
+        return this._vector;
+    }
+
+    set vector(newVec){
+        this.vector = newVec;
+        this.size = this._vector.length;
+        for (var i = 0; i < size; i++){
+                matrix.push([this._vector[i]]);
+            }
+    }
+
+    get matrix(){
+        return this.matrix;
+    }
+
+    scale(scalar){
+        let scale_vec = [];
+        for (var i = 0; i < this.szie; i++){
+            scale_vec.push(this._matrix[i][j] * scalar);
+        }
+        return scale_mat;
+    }
+
+    add(other){
+        console.log('add');
+        if (other.length !== this.size){
+            return null;
+        } else {
+            let add_mat = []; // WTF???
+            for (var i = 0; i < this.rows; i++){
+                add_mat.push([]);
+                for (var j = 0; j < this.cols; j++){
+                    add_mat[i].push(this._matrix[i][j] + other[i][j]);
+                }
+            }
+            return add_mat;
+        }
+    }
+}
+
 class Matrix{
     constructor(rows=3, cols=3, matrix=null){
         if (matrix === null){
-            this.rows = rows
-            this.cols = cols
+            this.rows = rows;
+            this.cols = cols;
             this._matrix = []
             for (var i = 0; i < rows; i++){
                 this._matrix.push([]);
                 for (var j = 0; j < cols; j++){
                     this._matrix[i].push(null);
                 }
+            this.vector = [];
         }
         } else {
-            this._matrix = matrix
-            this.rows = matrix.length
-            this.cols = matrix[0].length
+            this._matrix = matrix;
+            this.rows = matrix.length;
+            this.cols = matrix[0].length;
+            this.vector = [];
+            if (this.rows === 1){
+                for (var i = 0; i < this.cols; i++){
+                    this.vector.push(this._matrix[0][i]);
+                }
+            }
         }
-        this.detVal;
+        this._det;
         this.matChange = true;
     }
 
@@ -50,7 +117,27 @@ class Matrix{
         this._matrix = newMat;
         this.rows = this._matrix.length;
         this.cols = this._matrix[0].length;
+        if (this.rows === 1){
+            for (var i = 0; i < this.cols; i++){
+                this.vector.push(this._matrix[0][i]);
+            }
+        }
         this.matChange = true;
+    }
+
+    det2(matrix){
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    }
+
+    scale(scalar){
+        let scale_mat = [];
+        for (var i = 0; i < this.rows; i++){
+            scale_mat.push([]);
+            for (var j = 0; j < this.cols; j++){
+                scale_mat[i].push(this._matrix[i][j] * scalar);
+            }
+        }
+        return scale_mat;
     }
 
     get det(){
@@ -66,43 +153,17 @@ class Matrix{
                 let c = this._matrix[0][2] * (this._matrix[1][0] * this._matrix[2][1] - this._matrix[1][1] * this._matrix[2][0]);
                 temp = a - b + c;
             }
-            this.detVal = temp;
+            this._det = temp;
             this.matChange = false;
         }
-        return this.detVal;
-
-    }
-
-    scale(scalar){
-        let scale_mat = []
-        for (var i = 0; i < this.rows; i++){
-            scale_mat.push([]);
-            for (var j = 0; j < this.cols; j++){
-                scale_mat[i].push(this._matrix[i][j] * scalar);
-            }
-        }
-        return scale_mat
-    }
-
-    add(other){
-        if (other.length !== this.rows || other[0].length !== this.cols){
-            return null;
-        } else {
-            let add_mat = []
-            for (var i = 0; i < this.rows; i++){
-                add_mat.push([])
-                for (var j = 0; j < this.cols; j++){
-                    add_mat[i].push(this._matrix[i][j] + other[i][j]);
-                }
-            }
-            return add_mat;
-        }
+        return this._det;
     }
 
     mult(other){
+        console.log('mult');
         if (other.length !== this.cols){
             console.log(other.length, this.cols);
-            return null
+            return null;
         } else {
             let mult_mat = []
             for (var i = 0; i < this.rows; i++){
@@ -116,6 +177,22 @@ class Matrix{
                 }
             }
             return mult_mat;
+        }
+    }
+
+    add(other){
+        console.log('add');
+        if (other.length !== this.rows || other[0].length !== this.cols){
+            return null;
+        } else {
+            let add_mat = []; // WTF???
+            for (var i = 0; i < this.rows; i++){
+                add_mat.push([]);
+                for (var j = 0; j < this.cols; j++){
+                    add_mat[i].push(this._matrix[i][j] + other[i][j]);
+                }
+            }
+            return add_mat;
         }
     }
 
@@ -141,7 +218,7 @@ class Matrix{
                             }
                         }
                         if (swithX){
-                            x = 1;
+                            x = 1; // WTF???
                         }
                     }
                     AdjMat[j][i] = ((this.det2(smallMat) * ((i+j)%2 === 0 ? 1 : -1)) / this.det);
@@ -151,17 +228,12 @@ class Matrix{
         }
         return null
     }
-
-    det2(matrix){
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-    }
 }
 
 function rotate_vector(vector, yAngle){
     const a = vector[0];
     const b = vector[1];
     const c = vector[2];
-    // console.log([[a], [b], [c]][0].length);
     let vec = new Matrix(1, 3, [[a], [b], [c]]);
     const xAngle = 90 - Math.atan2(b, c);
     const xRotation = Rx(xAngle, false);
@@ -175,30 +247,43 @@ function rotate_vector(vector, yAngle){
 }
 
 function translate_point(point, vector){
-    return vector.add([[point[0]], [point[1]], [0]]);
+    retVec = vector.mult([[point[0], point[1], 0]])
+    return retVec;
 }
 
 function find_line_equ(pointA, pointB){
-    let m = (pointA[1] - pointB[1]) / (pointA[0] - pointB[0]);
-    let b = pointA[1] - m*pointA[0];
+    let a;
+    let b;
+    let c;
+    if (pointA[0] === pointB[0]){
+        a = 1;
+        b = 0;
+        c = -pointA[0];
+    } else{
+        a = ((pointA[1]-pointB[1])/(pointA[0] - pointB[0]));
+        b = -1;
+        c = (pointA[1] - a*pointA[0]);
+    }
     return {
-        m: m,
-        b: b
+        a: a,
+        b: b,
+        c: c
     };
 }
 
 function is_in_triangle(points, mPos){
     for (let i = 0; i < 3; i++){
         let equ = find_line_equ(points[i%3], points[(i+1)%3]);
-        let m = equ.m;
+        let a = equ.a;
         let b = equ.b;
-        refPointSide = m*points[(i+2)%3][0] + b - points[(i+2)%3][1];
-        mouseSide = m*mPos[0] + b - mPos[1];
-        if (mouseSide * refPointSide <= 0){
+        let c = equ.c;
+        let refPointSide = (a*points[(i+2)%3][0] + b*points[(i+2)%3][1] + c) > 0;
+        let mouseSide = (a*mPos[0] + b*mPos[1] + c) > 0;
+        if (mouseSide != refPointSide){
             return false;
         }
-        return true;
     }
+    return true;
 }
 
 function is_in_face(points, mPos){
@@ -208,13 +293,17 @@ function is_in_face(points, mPos){
         xAvg += points[i][0];
         yAvg += points[i][1];
     }
+    let test = 0;
     xAvg /= points.length;
     yAvg /= points.length;
-    centerPoint = [xAvg, yAvg];
+    let centerPoint = [xAvg, yAvg];
     for (var i = 0; i < points.length; i ++){
         if ((is_in_triangle([points[i], points[(i+1)%points.length], centerPoint], mPos))){
             return true;
         }
-        return false;
     }
+    return false;
 }
+
+mat1 = new Matrix(2, 2, [[2, 2], [2, 2]]);
+console.log(mat1.det);
