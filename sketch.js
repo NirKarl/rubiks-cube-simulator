@@ -57,7 +57,7 @@ function draw() {
     rectMode(CENTER);
 
     c1.drawCube();
-    // drawAxes();
+    drawAxes();
 }
 
 function drawAxes(){
