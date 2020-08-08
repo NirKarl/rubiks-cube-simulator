@@ -24,7 +24,7 @@ function Rz(ang, ccw=true){
 class Vector{
     constructor(size, vector=null){
         this.matrix = [];
-        if (size === null){
+        if (vector === null){
             this.size = size;
             this._vector = [];
             for (var i = 0; i < size; i++){
