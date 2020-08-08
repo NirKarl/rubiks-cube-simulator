@@ -58,6 +58,9 @@ function draw() {
     rectMode(CENTER);
 
     c1.drawCube();
+    // fill(black);
+    // noStroke();
+    // box(185);
     // drawAxes();
 }
 
@@ -197,16 +200,15 @@ class Cube{
             this.faces[this.facesOrder[i]] = new CubeSide(tempColors, tempOrientations[i%3]);
         }
 
-        this.faces['right'].setRow(0, [teal, blue, blue]);
-        this.faces['front'].setRow(0, [red, red, brown]);
-        this.faces['top'].setRow(2, [white, white, grey]);
-        this.faces['left'].setRow(0, [fuchsia, green, green]);
-        // this.faces['right'].setRow(2, [blue, blue, blue]);
+        // this.faces['right'].setRow(0, [teal, blue, blue]);
+        // this.faces['front'].setRow(0, [red, red, brown]);
+        // this.faces['top'].setRow(2, [white, white, grey]);
+        // this.faces['left'].setRow(0, [fuchsia, green, green]);
     }
 
     drawPlane(color, face, row, col){
         push();
-        ambientMaterial(color);
+        // ambientMaterial(color);
         var orientation = this.faces[face].getOrientation();
         rotateX(orientation[0]);
         rotateY(orientation[1]);
@@ -216,7 +218,16 @@ class Cube{
         } else {
             translate((col-1)*this.size, (row-1)*this.size, -(this.size+(this.qbSize)/2));
         }
-        plane(this.qbSize, this.qbSize);
+        beginShape();
+        var s = this.qbSize/2;
+        fill(color);
+        // stroke(darkGrey);
+        // strokeWeight(3);
+        vertex(s, s, 0);
+        vertex(s, -s, 0);
+        vertex(-s, -s, 0);
+        vertex(-s, s, 0);
+        endShape(CLOSE);
         pop();
     }
 
@@ -234,6 +245,20 @@ class Cube{
                 }
             }
         }
+        beginShape();
+        fill(darkGrey);
+        vertex(186/2, 186/2, 186/2-this.qbSize);
+        vertex(186/2, -186/2, 186/2-this.qbSize);
+        vertex(-186/2, -186/2, 186/2-this.qbSize);
+        vertex(-186/2, 186/2, 186/2-this.qbSize);
+        endShape(CLOSE);
+        beginShape();
+        fill(darkGrey);
+        vertex(186/2, 186/2, 186/2-this.qbSize-this.spacing);
+        vertex(186/2, -186/2, 186/2-this.qbSize-this.spacing);
+        vertex(-186/2, -186/2, 186/2-this.qbSize-this.spacing);
+        vertex(-186/2, 186/2, 186/2-this.qbSize-this.spacing);
+        endShape(CLOSE);
         pop();
     }
 
@@ -319,3 +344,6 @@ const ROTATE_TOP_CW = new Tranformation([ 6,  3,  0,  7,  4,  1,  8,  5,  2,
                                          27, 28, 29, 30, 31, 32, 33, 34, 35,
                                          18, 19, 20, 39, 40, 41, 42, 43, 44,
                                          36, 37, 38, 48, 49, 50, 51, 52, 53]);
+
+const ROTATE_X_CW = new Tranformation([
+                                  ]);

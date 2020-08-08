@@ -23,21 +23,24 @@ function Rz(ang, ccw=true){
 
 class Vector{
     constructor(size, vector=null){
-        if (data === null){
+        this.matrix = [];
+        if (size === null){
             this.size = size;
             this._vector = [];
             for (var i = 0; i < size; i++){
                 this._vector.push(null);
-            this.matrix = [];
             }
         } else{
             this.size = vector.length;
             this._vector = vector;
-            this.matrix = [];
             for (var i = 0; i < size; i++){
-                matrix.push([this._vector[i]]);
+                this.matrix.push([this._vector[i]]);
             }
         }
+
+        this.x = this._vector[0];
+        this.y = this._vector[1];
+        this.z = this._vector[2];
     }
 
     get vector(){
@@ -52,9 +55,9 @@ class Vector{
             }
     }
 
-    get matrix(){
-        return this.matrix;
-    }
+    // get matrix(){
+    //     return this.matrix;
+    // }
 
     scale(scalar){
         let scale_vec = [];

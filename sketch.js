@@ -22,7 +22,8 @@ const globalColors = [white, yellow, red, orange, blue, green];
 // ***************** GLOBAL CUBE SIZES *******************
 const space = 3;
 const sideSize = 60;
-let angle = 1
+let angle = 1;
+const fr = 30;
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
@@ -43,6 +44,7 @@ function setup() {
     mPressed = false;
     camAlpha = -17.2;
     camBeta = -11.5;
+    frameRate(fr);
 }
 
 function draw() {
@@ -55,9 +57,8 @@ function draw() {
     rotateY(-11.5);
 
     rectMode(CENTER);
-
     c1.drawCube();
-    drawAxes();
+    // drawAxes();
 }
 
 function drawAxes(){
@@ -153,7 +154,17 @@ class Cube{
         rotateY(angleY)
         rotateZ(angleZ)
         translate(x, y, z);
-        plane(this.size, this.size);
+        beginShape();
+        var s = this.size/2;
+        fill(color);
+        stroke(darkGrey);
+        strokeWeight(3);
+        vertex(s, s, 0);
+        vertex(s, -s, 0);
+        vertex(-s, -s, 0);
+        vertex(-s, s, 0);
+        endShape(CLOSE);
+        // plane(this.size, this.size);
         pop();
     }
 
@@ -163,7 +174,6 @@ class Cube{
         rotateX(this.angleX);
         rotateY(this.angleY);
         rotateZ(this.angleZ);
-        noStroke();
         this.drawPlane(this.sides['front'], 0, 0, this.size/2); // front
         this.drawPlane(this.sides['right'], 0, 0, this.size/2, 0, 90); // right
         this.drawPlane(this.sides['top'], 0, 0, this.size/2, 90, 0); // top
