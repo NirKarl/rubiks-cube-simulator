@@ -95,18 +95,11 @@ class Matrix{
                 for (var j = 0; j < cols; j++){
                     this._matrix[i].push(null);
                 }
-            this.vector = [];
         }
         } else {
             this._matrix = matrix;
             this.rows = matrix.length;
             this.cols = matrix[0].length;
-            this.vector = [];
-            if (this.rows === 1){
-                for (var i = 0; i < this.cols; i++){
-                    this.vector.push(this._matrix[0][i]);
-                }
-            }
         }
         this._det;
         this.matChange = true;
@@ -188,7 +181,7 @@ class Matrix{
         if (other.length !== this.rows || other[0].length !== this.cols){
             return null;
         } else {
-            let add_mat = []; // WTF???
+            let add_mat = [];
             for (var i = 0; i < this.rows; i++){
                 add_mat.push([]);
                 for (var j = 0; j < this.cols; j++){
@@ -310,3 +303,4 @@ function is_in_face(points, mPos){
 
 mat1 = new Matrix(2, 2, [[2, 2], [2, 2]]);
 console.log(mat1.det);
+console.table(mat1.matrix);

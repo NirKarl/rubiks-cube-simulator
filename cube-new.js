@@ -47,7 +47,6 @@ function setup() {
     let v1 = new Vector(3, [1, 0, 0]);
     f = new Face(v1, red)
     qb1 = new Qb(0);
-
 }
 
 function draw() {
