@@ -46,9 +46,13 @@ function setup() {
     camBeta = -11.5;
     let v1 = new Vector(3, [1, 0, 0]);
     f = new Face(v1, red)
+<<<<<<< HEAD
     qb1 = new Qb(new Matrix(3,3,[[0,0,0],[0,0,0],[0,0,0]]), globalColors);
     cube = new Cube(globalColors, darkGrey);
 
+=======
+    qb1 = new Qb(0);
+>>>>>>> origin/master
 }
 
 function draw() {
