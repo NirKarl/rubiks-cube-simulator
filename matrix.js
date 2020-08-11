@@ -1,19 +1,19 @@
 // **************** AXIS ROTATION MATRICES *****************
-function Rx(ang, ccw=true){
+function Rx(ang=90, ccw=true){
     if (ccw !== true){
         ang *= -1;
     }
     return new Matrix(3, 3, [[1, 0, 0], [0, cos(ang), -sin(ang)], [0, sin(ang), cos(ang)]]);
 }
 
-function Ry(ang, ccw=true){
+function Ry(ang=90, ccw=true){
     if (ccw !== true){
         ang *= -1;
     }
     return new Matrix(3, 3, [[cos(ang), 0, sin(ang)], [0, 1, 0], [-sin(ang), 0, cos(ang)]]);
 }
 
-function Rz(ang, ccw=true){
+function Rz(ang=90, ccw=true){
     if (ccw !== true){
         ang *= -1;
     }
@@ -307,6 +307,3 @@ function is_in_face(points, mPos){
     }
     return false;
 }
-
-mat1 = new Matrix(2, 2, [[2, 2], [2, 2]]);
-console.log(mat1.det);

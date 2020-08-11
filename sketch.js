@@ -2,8 +2,8 @@
 const blue = [0, 0, 200];
 const red = [200, 0, 0];
 const green = [0, 200, 0];
-const yellow = [200, 200, 0];
-const orange = [200, 55, 0];
+const yellow = [255, 255, 0];
+const orange = [255, 80, 25];
 const white = [200, 200, 200];
 const darkGrey = [55, 55, 55];
 const purple = [200, 55, 200];
@@ -15,7 +15,8 @@ const cyan = [1, 255, 255];
 const turquise = [0, 225, 205];
 const lightBlue = [0 , 96, 255];
 const yale = [14, 77, 146];
-const globalColors = [white, yellow, red, orange, blue, green];
+const fuchsia = [79, 17, 57];
+const globalColors = [white, blue, red, yellow, green, orange];
 // const globalColors = [teal, lightBlue, turquise, blue, cyan, yale];
 
 

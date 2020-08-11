@@ -16,7 +16,7 @@ const turquise = [0, 225, 205];
 const lightBlue = [0 , 96, 255];
 const yale = [14, 77, 146];
 const fuchsia = [79, 17, 57];
-const globalColors = [white, blue, red, yellow, green, orange];
+const globalColors = [orange, red, white, yellow, blue, green];
 // const globalColors = [teal, lightBlue, turquise, blue, cyan, yale];
 
 
@@ -46,7 +46,8 @@ function setup() {
     camBeta = -11.5;
     let v1 = new Vector(3, [1, 0, 0]);
     f = new Face(v1, red)
-    qb1 = new Qb(0);
+    qb1 = new Qb(new Matrix(3,3,[[0,0,0],[0,0,0],[0,0,0]]), globalColors);
+    cube = new Cube(globalColors, darkGrey);
 
 }
 
@@ -64,9 +65,9 @@ function draw() {
     // c1.drawCube();
     drawAxes();
     // f.show();
-    push();
-    translate(63, 0, 0);
-    qb1.show();
+    push();;
+    cube.show();
+    // qb1.show();
     pop();
 
 }
@@ -116,6 +117,7 @@ function mousePressed(){
         // face = c1.checkFace([mouseX, mouseY]);
         // if (face !== null){
         console.log('clicked');
+        cube.rotate_top();
         // c1.rotateFace('top', (key==='Shift' && keyIsPressed));
         // ROTATE_TOP_CW.apply(c1);
     // }
@@ -163,13 +165,13 @@ class Face{
         this.color = clr;
     }
 
-    show(isLit=true, shadow=undefined){
+    show(){
         push();
-        translate((this.normal.x/2)*size, (this.normal.y/2)*size, (this.normal.z/2)*size);
+        translate((this.normal.x/2)*globalQbSize, (this.normal.y/2)*globalQbSize, (this.normal.z/2)*globalQbSize);
         rotateY(90*this.normal.x);
         rotateX(90*this.normal.y);
         scale(size);
-        fill(isLit ? this.color : shadow);
+        fill(this.color);
         rectMode(CENTER);
         square(0, 0, 1);
         pop();
@@ -178,21 +180,76 @@ class Face{
 
 class Qb{
 
-    constructor(mat){
+    constructor(mat, colors=globalColors){
         this.mat = mat;
+        // console.log(this.mat);
         this.faces = [
-            new Face(new Vector(1, [-1, 0, 0]), orange),
-            new Face(new Vector(1, [1, 0, 0]), red),
-            new Face(new Vector(1, [0, -1, 0]), white),
-            new Face(new Vector(1, [0, 1, 0]), yellow),
-            new Face(new Vector(1, [0, 0, 1]), blue),
-            new Face(new Vector(1, [0, 0, -1]), green)
+            new Face(new Vector(1, [-1, 0, 0]), colors[0]),
+            new Face(new Vector(1, [1, 0, 0]), colors[1]),
+            new Face(new Vector(1, [0, -1, 0]), colors[2]),
+            new Face(new Vector(1, [0, 1, 0]), colors[3]),
+            new Face(new Vector(1, [0, 0, -1]), colors[4]),
+            new Face(new Vector(1, [0, 0, 1]), colors[5])
         ];
+
+        this.rotatey = false;
+    }
+
+    get xyz(){
+        let x = 0;
+        let y = 0;
+        let z = 0;
+        for (let i = 0; i < 3; i++) {
+            x += this.mat.matrix[0][i];
+            y += this.mat.matrix[1][i];
+            z += this.mat.matrix[2][i];
+        }
+        return [x, y, z]
     }
 
     show(){
-        for (var i = 0; i < this.faces.length; i++) {
+        for (let i = 0; i < this.faces.length; i++) {
+            push();
+            let trans = this.xyz;
+            translate(trans[0], trans[1], trans[2]);
             this.faces[i].show();
+            pop();
+        }
+    }
+}
+
+class Cube{
+    constructor(colors=globalColors, shadowClr=darkGrey){
+        this.qbs = [];
+        let dist = globalQbSize + globalSpacing;
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                for (let z = -1; z <= 1; z++) {
+                    let tempColors = [];
+                    tempColors.push(x == -1 ? colors[0] : shadowClr);
+                    tempColors.push(x == 1 ? colors[1] : shadowClr);
+                    tempColors.push(y == -1 ? colors[2] : shadowClr);
+                    tempColors.push(y == 1 ? colors[3] : shadowClr);
+                    tempColors.push(z == -1 ? colors[4] : shadowClr);
+                    tempColors.push(z == 1 ? colors[5] : shadowClr);
+                    let tempMat = new Matrix(3, 3, [[x*dist,0,0],[0,y*dist,0],[0,0,z*dist]]);
+                    this.qbs.push(new Qb(tempMat, tempColors));
+                }
+            }
+        }
+    }
+
+    show(){
+        for (let i = 0; i < this.qbs.length; i++) {
+            this.qbs[i].show();
+        }
+    }
+
+    rotate_top(){
+        for (let i = 0; i < this.qbs.length; i++) {
+            if(this.qbs[i].mat.matrix[1][1] < 0){
+                this.qbs[i].mat.matrix = this.qbs[i].mat.mult(Ry().matrix);
+            }
         }
     }
 }
