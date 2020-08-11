@@ -80,9 +80,9 @@ class Vector3D{
         } else if(other instanceof(Matrix3D)){
             result = new Array(3);
             for (let i = 0; i < 3; i++) {
-                result[j] = 0;
+                result[i] = 0;
                 for (let j = 0; j < 3; j++) {
-                    result[i][j] += Math.round((this._vector[j] * other.matrix[i][j]));;
+                    result[i] += Math.round((this._vector[j] * other.matrix[i][j]));
                 }
             }
         }

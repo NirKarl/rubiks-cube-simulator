@@ -187,16 +187,18 @@ class Qb{
             new Face(new Vector3D([0, 0, -1]), colors[4]),
             new Face(new Vector3D([0, 0, 1]), colors[5])
         ];
+    }
 
-        this.rotatey = false;
+    rotate_y(){
+        for (var i = 0; i < this.faces.length; i++) {
+            this.faces[i].normal.mult(Ry());
+        }
     }
 
     get xyz(){
         let x = 0;
         let y = 0;
         let z = 0;
-        // console.table(this.mat.matrix);
-        // console.table(this.mat.matrix[0]);
         for (let i = 0; i < 3; i++) {
             x += this.mat.matrix[0][i];
             y += this.mat.matrix[1][i];
@@ -246,7 +248,8 @@ class Cube{
     rotate_top(){
         for (let i = 0; i < this.qbs.length; i++) {
             if(this.qbs[i].mat.matrix[1][1] < 0){
-                this.qbs[i].mat.matrix = this.qbs[i].mat.mult(Ry());
+                this.qbs[i].rotate_y();
+                this.qbs[i].mat.mult(Ry());
             }
         }
     }
