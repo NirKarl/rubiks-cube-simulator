@@ -44,15 +44,8 @@ function setup() {
     mPressed = false;
     camAlpha = -17.2;
     camBeta = -11.5;
-    let v1 = new Vector(3, [1, 0, 0]);
-    f = new Face(v1, red)
-<<<<<<< HEAD
-    qb1 = new Qb(new Matrix(3,3,[[0,0,0],[0,0,0],[0,0,0]]), globalColors);
+    qb1 = new Qb(new Matrix3D([[0,0,0],[0,0,0],[0,0,0]]), globalColors);
     cube = new Cube(globalColors, darkGrey);
-
-=======
-    qb1 = new Qb(0);
->>>>>>> origin/master
 }
 
 function draw() {
@@ -73,7 +66,6 @@ function draw() {
     cube.show();
     // qb1.show();
     pop();
-
 }
 
 function drawAxes(){
@@ -188,12 +180,12 @@ class Qb{
         this.mat = mat;
         // console.log(this.mat);
         this.faces = [
-            new Face(new Vector(1, [-1, 0, 0]), colors[0]),
-            new Face(new Vector(1, [1, 0, 0]), colors[1]),
-            new Face(new Vector(1, [0, -1, 0]), colors[2]),
-            new Face(new Vector(1, [0, 1, 0]), colors[3]),
-            new Face(new Vector(1, [0, 0, -1]), colors[4]),
-            new Face(new Vector(1, [0, 0, 1]), colors[5])
+            new Face(new Vector3D([-1, 0, 0]), colors[0]),
+            new Face(new Vector3D([1, 0, 0]), colors[1]),
+            new Face(new Vector3D([0, -1, 0]), colors[2]),
+            new Face(new Vector3D([0, 1, 0]), colors[3]),
+            new Face(new Vector3D([0, 0, -1]), colors[4]),
+            new Face(new Vector3D([0, 0, 1]), colors[5])
         ];
 
         this.rotatey = false;
@@ -203,6 +195,8 @@ class Qb{
         let x = 0;
         let y = 0;
         let z = 0;
+        // console.table(this.mat.matrix);
+        // console.table(this.mat.matrix[0]);
         for (let i = 0; i < 3; i++) {
             x += this.mat.matrix[0][i];
             y += this.mat.matrix[1][i];
@@ -236,7 +230,7 @@ class Cube{
                     tempColors.push(y == 1 ? colors[3] : shadowClr);
                     tempColors.push(z == -1 ? colors[4] : shadowClr);
                     tempColors.push(z == 1 ? colors[5] : shadowClr);
-                    let tempMat = new Matrix(3, 3, [[x*dist,0,0],[0,y*dist,0],[0,0,z*dist]]);
+                    let tempMat = new Matrix3D([[x*dist,0,0],[0,y*dist,0],[0,0,z*dist]]);
                     this.qbs.push(new Qb(tempMat, tempColors));
                 }
             }
@@ -252,7 +246,7 @@ class Cube{
     rotate_top(){
         for (let i = 0; i < this.qbs.length; i++) {
             if(this.qbs[i].mat.matrix[1][1] < 0){
-                this.qbs[i].mat.matrix = this.qbs[i].mat.mult(Ry().matrix);
+                this.qbs[i].mat.matrix = this.qbs[i].mat.mult(Ry());
             }
         }
     }
