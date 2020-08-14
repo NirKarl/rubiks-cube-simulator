@@ -1,26 +1,34 @@
 // **************** AXIS ROTATION MATRICES *****************
-function Rx(ang=90, ccw=true) {
+function Rx(ang=90, ccw=false) {
     if (ccw !== true) {
         ang *= -1;
     }
     return new Matrix3D([[1, 0, 0], [0, cos(ang), -sin(ang)], [0, sin(ang), cos(ang)]]);
 }
 
-function Ry(ang=90, ccw=true) {
+function Ry(ang=90, ccw=false) {
     if (ccw !== true) {
         ang *= -1;
     }
     return new Matrix3D([[cos(ang), 0, sin(ang)], [0, 1, 0], [-sin(ang), 0, cos(ang)]]);
 }
 
-function Rz(ang=90, ccw=true) {
+function Rz(ang=90, ccw=false) {
     if (ccw !== true) {
         ang *= -1;
     }
     return new Matrix3D([[cos(ang), -sin(ang), 0], [sin(ang), cos(ang), 0], [0, 0, 1]]);
 }
 
-
+function get_basic_rotation_matrix(axis, ccw=false){
+    if(axis == 'x'){
+        return Rx(90, ccw);
+    } else if(axis == 'y'){
+        return Ry(90, ccw);
+    } else if(axis == 'z'){
+        return Rz(90, ccw);
+    }
+}
 class Vector3D{
 
     constructor(xyz=null) {
@@ -143,9 +151,8 @@ class Matrix3D{
         let result = []
         if(other instanceof(Matrix3D)){
             for (let i = 0; i < 3; i++){
-                result.push([])
-                for (let j = 0; j < other.matrix[0].length; j++){
-                    result[i].push(0);
+                result.push([0, 0, 0]);
+                for (let j = 0; j < 3; j++){
                     for (let k = 0; k < 3; k++){
                         result[i][j] += Math.round((this._matrix[i][k] * other.matrix[k][j]));
                     }

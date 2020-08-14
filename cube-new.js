@@ -113,9 +113,10 @@ function mousePressed(){
         // face = c1.checkFace([mouseX, mouseY]);
         // if (face !== null){
         console.log('clicked');
-        cube.rotate_top();
-        // c1.rotateFace('top', (key==='Shift' && keyIsPressed));
-        // ROTATE_TOP_CW.apply(c1);
+        // cube.rotate_top((key==='Shift' && keyIsPressed));
+        // cube.rotate_right((key==='Shift' && keyIsPressed));
+        // cube.rotate_front((key==='Shift' && keyIsPressed));
+        cube.rotate('x', -1, (key==='Shift' && keyIsPressed));
     // }
     }
 }
@@ -176,8 +177,8 @@ class Face{
 
 class Qb{
 
-    constructor(mat, colors=globalColors){
-        this.mat = mat;
+    constructor(vec, colors=globalColors){
+        this.vec = vec;
         // console.log(this.mat);
         this.faces = [
             new Face(new Vector3D([-1, 0, 0]), colors[0]),
@@ -189,29 +190,34 @@ class Qb{
         ];
     }
 
-    rotate_y(){
-        for (var i = 0; i < this.faces.length; i++) {
-            this.faces[i].normal.mult(Ry());
-        }
-    }
+    // rotate_x(ccw=false){
+    //     for (var i = 0; i < this.faces.length; i++) {
+    //         this.faces[i].normal.mult(Rx(90, ccw));
+    //     }
+    // }
 
-    get xyz(){
-        let x = 0;
-        let y = 0;
-        let z = 0;
-        for (let i = 0; i < 3; i++) {
-            x += this.mat.matrix[0][i];
-            y += this.mat.matrix[1][i];
-            z += this.mat.matrix[2][i];
+    // rotate_y(ccw=false){
+    //     for (var i = 0; i < this.faces.length; i++) {
+    //         this.faces[i].normal.mult(Ry(90, ccw));
+    //     }
+    // }
+
+    // rotate_z(ccw=false){
+    //     for (var i = 0; i < this.faces.length; i++) {
+    //         this.faces[i].normal.mult(Rz(90, ccw));
+    //     }
+    // }
+
+    rotate(rotationMat){
+        for (var i = 0; i < this.faces.length; i++) {
+            this.faces[i].normal.mult(rotationMat);
         }
-        return [x, y, z]
     }
 
     show(){
         for (let i = 0; i < this.faces.length; i++) {
             push();
-            let trans = this.xyz;
-            translate(trans[0], trans[1], trans[2]);
+            translate(this.vec.x, this.vec.y, this.vec.z);
             this.faces[i].show();
             pop();
         }
@@ -232,8 +238,8 @@ class Cube{
                     tempColors.push(y == 1 ? colors[3] : shadowClr);
                     tempColors.push(z == -1 ? colors[4] : shadowClr);
                     tempColors.push(z == 1 ? colors[5] : shadowClr);
-                    let tempMat = new Matrix3D([[x*dist,0,0],[0,y*dist,0],[0,0,z*dist]]);
-                    this.qbs.push(new Qb(tempMat, tempColors));
+                    let tempVec = new Vector3D([x*dist ,y*dist, z*dist]);
+                    this.qbs.push(new Qb(tempVec, tempColors));
                 }
             }
         }
@@ -245,11 +251,28 @@ class Cube{
         }
     }
 
-    rotate_top(){
+    rotate(axis, pole, ccw=false){
+        let rotationMat;
+        let searchCordIndex;
+        pole < 0 ? ccw = !ccw : null;
+        if(axis !== 'y'){
+            ccw = !ccw;
+            if(axis === 'x'){
+                rotationMat = Rx(90, ccw);
+                searchCordIndex = 0;
+            } else if(axis === 'z'){
+                rotationMat = Rz(90, ccw);
+                searchCordIndex = 2;
+            }
+        } else {
+            rotationMat = Ry(90, ccw);
+            searchCordIndex = 1;
+        }
+        console.log('rotating', ccw);
         for (let i = 0; i < this.qbs.length; i++) {
-            if(this.qbs[i].mat.matrix[1][1] < 0){
-                this.qbs[i].rotate_y();
-                this.qbs[i].mat.mult(Ry());
+            if(this.qbs[i].vec.vector[searchCordIndex] * pole > 0){
+                this.qbs[i].rotate(rotationMat);
+                this.qbs[i].vec.mult(rotationMat);
             }
         }
     }
