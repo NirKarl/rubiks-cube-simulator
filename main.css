@@ -1,8 +1,48 @@
 body {
     margin: 0;
-    height = 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
-canvas{
-    display: block;
+iframe{
+    height: 90vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+li{
+    display: flex;
+    width: 33.4%;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3vh;
+    font-weight: bold;
+}
+
+li a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#GUI2D{
+    background: #2981E5;
+}
+
+#GUI3D{
+    background: #D75151;
+}
+
+#CAMERAS{
+    background: #FFAA55;
 }

@@ -116,7 +116,7 @@ function mousePressed(){
         // cube.rotate_top((key==='Shift' && keyIsPressed));
         // cube.rotate_right((key==='Shift' && keyIsPressed));
         // cube.rotate_front((key==='Shift' && keyIsPressed));
-        cube.rotate('x', -1, (key==='Shift' && keyIsPressed));
+        cube.rotate('z', 1, (key==='Shift' && keyIsPressed));
     // }
     }
 }
@@ -160,17 +160,48 @@ class Face{
     constructor(normal, clr){
         this.normal = normal;
         this.color = clr;
+        let halfQbSize = globalQbSize/2;
+        if(normal.x !== 0){
+            this.verticies = [new Vector3D([0, halfQbSize, halfQbSize]),
+                              new Vector3D([0, -halfQbSize, halfQbSize]),
+                              new Vector3D([0, -halfQbSize, -halfQbSize]),
+                              new Vector3D([0, halfQbSize, -halfQbSize])];
+        } else if(normal.y !== 0){
+            this.verticies = [new Vector3D([halfQbSize, 0, halfQbSize]),
+                              new Vector3D([halfQbSize, 0, -halfQbSize]),
+                              new Vector3D([-halfQbSize, 0, -halfQbSize]),
+                              new Vector3D([-halfQbSize, 0, halfQbSize])];
+        } else if(normal.z !== 0){
+            this.verticies = [new Vector3D([halfQbSize, halfQbSize, 0]),
+                              new Vector3D([halfQbSize, -halfQbSize, 0]),
+                              new Vector3D([-halfQbSize, -halfQbSize, 0]),
+                              new Vector3D([-halfQbSize, halfQbSize, 0])];
+        }
+
+    }
+
+    rotate(rotationMatrix){
+        for (var i = 0; i < this.verticies.length; i++) {
+            this.verticies[i].mult(rotationMatrix);
+        }
+        // this.verticies.mult(rotationMatrix);
     }
 
     show(){
         push();
-        translate((this.normal.x/2)*globalQbSize, (this.normal.y/2)*globalQbSize, (this.normal.z/2)*globalQbSize);
-        rotateY(90*this.normal.x);
-        rotateX(90*this.normal.y);
-        scale(size);
+        translate((this.normal.x/2)*globalQbSize,
+                  (this.normal.y/2)*globalQbSize,
+                  (this.normal.z/2)*globalQbSize);
+        // scale(size);
         fill(this.color);
         rectMode(CENTER);
-        square(0, 0, 1);
+        beginShape();
+        vertex(this.verticies[0].x, this.verticies[0].y, this.verticies[0].z);
+        vertex(this.verticies[1].x, this.verticies[1].y, this.verticies[1].z);
+        vertex(this.verticies[2].x, this.verticies[2].y, this.verticies[2].z);
+        vertex(this.verticies[3].x, this.verticies[3].y, this.verticies[3].z);
+        endShape(CLOSE);
+        // square(0, 0, 1);
         pop();
     }
 }
@@ -190,27 +221,12 @@ class Qb{
         ];
     }
 
-    // rotate_x(ccw=false){
-    //     for (var i = 0; i < this.faces.length; i++) {
-    //         this.faces[i].normal.mult(Rx(90, ccw));
-    //     }
-    // }
-
-    // rotate_y(ccw=false){
-    //     for (var i = 0; i < this.faces.length; i++) {
-    //         this.faces[i].normal.mult(Ry(90, ccw));
-    //     }
-    // }
-
-    // rotate_z(ccw=false){
-    //     for (var i = 0; i < this.faces.length; i++) {
-    //         this.faces[i].normal.mult(Rz(90, ccw));
-    //     }
-    // }
-
-    rotate(rotationMat){
-        for (var i = 0; i < this.faces.length; i++) {
-            this.faces[i].normal.mult(rotationMat);
+    rotate(rotationMat, toLog=false){
+        for (let i = 0; i < this.faces.length; i++) {
+            if(i==3 && toLog){
+                console.table(this.faces[i].normal.vector);
+            }
+            this.faces[i].rotate(rotationMat);
         }
     }
 
@@ -247,33 +263,45 @@ class Cube{
 
     show(){
         for (let i = 0; i < this.qbs.length; i++) {
-            this.qbs[i].show();
+            if(i==17){
+                this.qbs[i].show();
+            }
         }
     }
 
-    rotate(axis, pole, ccw=false){
+    rotate(axis, pole, ccw=false, angle=5){
         let rotationMat;
         let searchCordIndex;
-        pole < 0 ? ccw = !ccw : null;
-        if(axis !== 'y'){
-            ccw = !ccw;
-            if(axis === 'x'){
-                rotationMat = Rx(90, ccw);
-                searchCordIndex = 0;
-            } else if(axis === 'z'){
-                rotationMat = Rz(90, ccw);
-                searchCordIndex = 2;
-            }
-        } else {
-            rotationMat = Ry(90, ccw);
+        pole > 0 ? ccw = !ccw : null;
+        if(axis === 'x'){
+            rotationMat = Rx(angle, ccw);
+            searchCordIndex = 0;
+        } else if(axis === 'y'){
+            rotationMat = Ry(angle, ccw);
             searchCordIndex = 1;
+        } else if(axis === 'z') {
+            rotationMat = Rz(angle, ccw);
+            searchCordIndex = 2;
+            printMatrix(rotationMat);
         }
-        console.log('rotating', ccw);
         for (let i = 0; i < this.qbs.length; i++) {
             if(this.qbs[i].vec.vector[searchCordIndex] * pole > 0){
-                this.qbs[i].rotate(rotationMat);
+                this.qbs[i].rotate(rotationMat, i==17);
                 this.qbs[i].vec.mult(rotationMat);
             }
         }
     }
+}
+
+function printMatrix(mat){
+    console.log("MATRIX:");
+    mat.matrix.forEach(row => {
+           rowStr = "";
+           row.forEach(cell => {
+                rowStr += ` ${Math.round(cell)}`
+                }
+           );
+           console.log(rowStr);
+        }
+    );
 }

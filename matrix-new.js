@@ -20,15 +20,6 @@ function Rz(ang=90, ccw=false) {
     return new Matrix3D([[cos(ang), -sin(ang), 0], [sin(ang), cos(ang), 0], [0, 0, 1]]);
 }
 
-function get_basic_rotation_matrix(axis, ccw=false){
-    if(axis == 'x'){
-        return Rx(90, ccw);
-    } else if(axis == 'y'){
-        return Ry(90, ccw);
-    } else if(axis == 'z'){
-        return Rz(90, ccw);
-    }
-}
 class Vector3D{
 
     constructor(xyz=null) {
@@ -90,7 +81,7 @@ class Vector3D{
             for (let i = 0; i < 3; i++) {
                 result[i] = 0;
                 for (let j = 0; j < 3; j++) {
-                    result[i] += Math.round((this._vector[j] * other.matrix[i][j]));
+                    result[i] += (this._vector[j] * other.matrix[i][j]);
                 }
             }
         }
@@ -154,7 +145,7 @@ class Matrix3D{
                 result.push([0, 0, 0]);
                 for (let j = 0; j < 3; j++){
                     for (let k = 0; k < 3; k++){
-                        result[i][j] += Math.round((this._matrix[i][k] * other.matrix[k][j]));
+                        result[i][j] +=(this._matrix[i][k] * other.matrix[k][j]);
                     }
                 }
             }
