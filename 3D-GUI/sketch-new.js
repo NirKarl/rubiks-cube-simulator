@@ -3,13 +3,12 @@ function setup() {
     angleMode(DEGREES);
     cam = createCamera();
     camDist = 600;
-    r = (width/2) / tan(30/2);
     mX = 0;
     mY = 0;
     mAlpha = 0;
     mBeta = 0;
     mPressed = false;
-    camAlpha = -31;
+    camAlpha = 62;
     camBeta = 31;
     camX = camDist*sin(camAlpha)*cos(camBeta);
     camY = camDist*sin(camBeta);
@@ -20,15 +19,18 @@ function setup() {
 
 function draw() {
     ambientLight(200);
-    background(100);
+    background(backgorund3D);
 
-    cam.setPosition(-camX, -camY, camZ);
-    cam.lookAt(0,0,0);
+    // cam.setPosition(-camX, -camY, camZ);
+    // cam.lookAt(0,0,0);
+    up = (camBeta%360>90 && camBeta%360<270?-1:1);
+    cam.camera(-camX, -camY, camZ, 0, 0, 0, 0, up, 0);
 
 
     rectMode(CENTER);
 
-    drawAxes();
+    // drawAxes();
+
     push();;
     cube.show();
     pop();
@@ -74,7 +76,17 @@ function drawAxes(){
 
 function keyPressed(){
     if (keyCode === 70){
-        cube.rotate('z', 1, (key==='Shift' && keyIsPressed));
+        cube.rotate('x', -1, (key==='Shift' && keyIsPressed), 90);
+    } else if (keyCode === 66){
+        cube.rotate('x', 1, (key==='Shift' && keyIsPressed), 90);
+    } else if (keyCode === 84){
+        cube.rotate('y', -1, (key==='Shift' && keyIsPressed), 90);
+    } else if (keyCode === 68){
+        cube.rotate('y', 1, (key==='Shift' && keyIsPressed), 90);
+    } else if (keyCode === 82){
+        cube.rotate('z', 1, (key==='Shift' && keyIsPressed), 90);
+    } else if (keyCode === 76){
+        cube.rotate('z', -1, (key==='Shift' && keyIsPressed), 90);
     }
 }
 
@@ -108,12 +120,10 @@ function mouseDragged(){
             mPressed = true;
         } else{
             camAlpha = mAlpha + (mouseX - mX)*(360/windowWidth)
-            camBeta = mBeta + (mouseY - mY)*(360/windowHeight)
+            camBeta = mBeta + (mouseY - mY)*(180/windowHeight)
             camX = camDist*sin(camAlpha)*cos(camBeta);
             camY = camDist*sin(camBeta);
             camZ = camDist*cos(camAlpha)*cos(camBeta);
-            console.log("a:", int(camAlpha), " b:", int(camBeta))
-            console.log("x:", int(camX), " y:", int(camY), " z:", int(camZ))
         }
     }
 }

@@ -1,29 +1,4 @@
-// ********** COLORS **************
-const blue = [0, 0, 200];
-const red = [200, 0, 0];
-const green = [0, 200, 0];
-const yellow = [255, 255, 0];
-const orange = [255, 80, 25];
-const white = [200, 200, 200];
-const darkGrey = [55, 55, 55];
-const purple = [200, 55, 200];
-const grey = [85, 85, 85];
-const black = [0, 0, 0];
-const brown = [101, 67, 33];
-const teal = [1, 128, 129];
-const cyan = [1, 255, 255];
-const turquise = [0, 225, 205];
-const lightBlue = [0 , 96, 255];
-const yale = [14, 77, 146];
-const fuchsia = [79, 17, 57];
-const globalColors = [orange, red, white, yellow, blue, green];
-// const globalColors = [teal, lightBlue, turquise, blue, cyan, yale];
-
-
-// ***************** GLOBAL CUBE SIZES *******************
-const globalSpacing = 3;
-const globalQbSize = 60;
-let angle = 1
+const angle = 1
 
 class Face{
 
@@ -116,12 +91,12 @@ class Cube{
             for (let y = -1; y <= 1; y++) {
                 for (let z = -1; z <= 1; z++) {
                     let tempColors = [];
-                    tempColors.push(x == -1 ? colors[0] : shadowClr);
-                    tempColors.push(x == 1 ? colors[1] : shadowClr);
-                    tempColors.push(y == -1 ? colors[2] : shadowClr);
-                    tempColors.push(y == 1 ? colors[3] : shadowClr);
+                    tempColors.push(x == -1 ? colors[1] : shadowClr);
+                    tempColors.push(x == 1 ? colors[3] : shadowClr);
+                    tempColors.push(y == -1 ? colors[0] : shadowClr);
+                    tempColors.push(y == 1 ? colors[5] : shadowClr);
                     tempColors.push(z == -1 ? colors[4] : shadowClr);
-                    tempColors.push(z == 1 ? colors[5] : shadowClr);
+                    tempColors.push(z == 1 ? colors[2] : shadowClr);
                     let tempVec = new Vector3D([x*dist ,y*dist, z*dist]);
                     this.qbs.push(new Qb(tempVec, tempColors));
                 }
