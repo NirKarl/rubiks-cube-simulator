@@ -1,6 +1,31 @@
 const yzAngle = 120;
 const xyAngle = 120;
 
+function posSideOfLine(mpos, poses){
+    console.log(mpos)
+    let pos1 = poses[0];
+    let pos2 = poses[1];
+    if((pos1[0] - pos2[0]) === 0){
+        if (pos1[0] < mpos[0]){
+            // console.log(pos1[0], mpos[0]);
+            return 1;
+        } else if(pos1[0] === mpos[0]){
+            return 0;
+        }
+        return -1
+    }
+    let m = (pos1[1] - pos2[1]) / (pos1[0] - pos2[0]);
+    let b = pos1[1] - (m * pos1[0]);
+    let y = m * mpos[0] + b;
+    // console.log("m:", m, "b:", b, "y:", y, "mpos:", mpos);
+    if (y > mpos[1]){
+        return 1;
+    } else if( y === mpos[1]){
+        return 0;
+    }
+    return -1
+}
+
 function projectYZPlane(point, length){
     let x = point[0];
     let y = point[1];
@@ -63,26 +88,45 @@ class ProjectedTile{
         endShape(CLOSE);
         pop();
     }
+
+    isInRect(mpos){
+        let pair1 = 1;
+        let pair2 = 1;
+        for (let i = 0; i < this.verticies.length; i++) {
+            let side = posSideOfLine(mpos, [this.verticies[i], this.verticies[(i+1)%this.verticies.length]]);
+            if(i%2 === 0){
+                pair1 *= side
+            } else{
+                pair2 *= side
+            }
+            // console.log(i, side);
+            // console.log(mpos, [this.verticies[i], this.verticies[(i+1)%this.verticies.length]]);
+        }
+        console.log(mpos, this.verticies)
+        let finelSide = pair1 < 0 && pair2 < 0;
+        console.log("finel side", finelSide);
+        return finelSide;
+    }
 }
 
 class YZFace{
     constructor(color, pos){
-        this.faces = [];
+        this.tiles = [];
         let prevPos = pos;
         for(let i = 0; i < 3; i++){
-            this.faces.push([])
+            this.tiles.push([])
             for(let j = 0; j < 3; j++){
-                this.faces[i].push(new ProjectedTile(color, "YZ", [prevPos[0], prevPos[1] + j*globalTileSize]))
+                this.tiles[i].push(new ProjectedTile(color, "YZ", [prevPos[0], prevPos[1] + j*globalTileSize]))
             }
-            prevPos = this.faces[i][0].verticies[1];
+            prevPos = this.tiles[i][0].verticies[1];
         }
     }
 
     draw(){
         for(let i = 0; i < 3; i++){
-            this.faces.push([])
+            this.tiles.push([])
             for(let j = 0; j < 3; j++){
-                this.faces[i][j].draw()
+                this.tiles[i][j].draw()
             }
         }
     }
@@ -90,22 +134,22 @@ class YZFace{
 
 class XYFace{
     constructor(color, pos){
-        this.faces = [];
+        this.tiles = [];
         let prevPos = pos;
         for(let i = 0; i < 3; i++){
-            this.faces.push([])
+            this.tiles.push([])
             for(let j = 0; j < 3; j++){
-                this.faces[i].push(new ProjectedTile(color, "XY", [prevPos[0], prevPos[1] + j*globalTileSize]))
+                this.tiles[i].push(new ProjectedTile(color, "XY", [prevPos[0], prevPos[1] + j*globalTileSize]))
             }
-            prevPos = this.faces[i][0].verticies[1];
+            prevPos = this.tiles[i][0].verticies[1];
         }
     }
 
     draw(){
         for(let i = 0; i < 3; i++){
-            this.faces.push([])
+            this.tiles.push([])
             for(let j = 0; j < 3; j++){
-                this.faces[i][j].draw()
+                this.tiles[i][j].draw()
             }
         }
     }
