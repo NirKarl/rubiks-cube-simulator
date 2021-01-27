@@ -132,6 +132,18 @@ class Cube{
             }
         }
     }
+
+    dump(){
+        for (let i = 0; i < this.qbs.length; i++) {
+            console.log(i, this.qbs[i].vec.vector[0], this.qbs[i].vec.vector[1], this.qbs[i].vec.vector[2]);
+        }
+    }
+
+    round(){
+        for(let i = 0; i < this.qbs.length; i++){
+            this.qbs[i].vec.round();
+        }
+    }
 }
 
 function printMatrix(mat){
