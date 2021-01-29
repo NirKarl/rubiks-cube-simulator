@@ -1,5 +1,5 @@
-const yzAngle = 120;
-const xyAngle = 120;
+const yzAngle = 135;
+const xyAngle = 105;
 
 function posSideOfLine(mpos, poses){
     console.log(mpos)

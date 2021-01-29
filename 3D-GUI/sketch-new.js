@@ -76,7 +76,7 @@ function drawAxes(){
 
 function keyPressed(){
     if (keyCode === 70){
-        cube.rotate('x', -1, (key==='Shift' && keyIsPressed), 90);
+        cube.rotate('x', -1, (key==='Shift' && keyIsPressed), 30);
     } else if (keyCode === 66){
         cube.rotate('x', 1, (key==='Shift' && keyIsPressed), 90);
     } else if (keyCode === 84){

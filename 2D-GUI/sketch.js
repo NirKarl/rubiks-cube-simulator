@@ -1,6 +1,7 @@
 function setup() {
     angleMode(DEGREES);
-    createCanvas(windowWidth, windowHeight);
+    let cnv = createCanvas(windowWidth, windowHeight);
+    cnv.parent('flatten');
     face = new Face(white, [500, 500]);
     projectedTile1 = new ProjectedTile(red, "XY", [500, 500]);
     projectedTile2 = new ProjectedTile(white, "XY", [400, 400]);

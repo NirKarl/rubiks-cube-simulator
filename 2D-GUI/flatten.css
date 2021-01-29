@@ -3,10 +3,13 @@ body {
     height: 100vh;
     overflow: hidden;
     /*background: #525252;*/
+    display: grid;
+    grid-columns: auto;
+    grid-row: auto;
 }
 
 iframe{
-    height: 90vh;
+    height: 100vh;
     width: 100vw;
     margin: 0;
     padding: 0;
@@ -46,4 +49,15 @@ li a{
 
 #CAMERAS{
     background: #FFAA55;
+}
+
+.botton{
+    display: flex;
+    width: 30%;
+    height: 30%;
+    background: #ffffff;
+}
+
+control_panel{
+    background: #fff;
 }
