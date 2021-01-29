@@ -15,6 +15,9 @@ function setup() {
     camZ = camDist*cos(camAlpha)*cos(camBeta);
     cam.setPosition(-camX, -camY, camZ);
     cube = new Cube(globalColors, darkGrey);
+    rotationSteps = 0;
+    frameRate(60)
+    dir = false
 }
 
 function draw() {
@@ -34,6 +37,8 @@ function draw() {
     push();;
     cube.show();
     pop();
+
+    cubeAnimatedRotation();
 }
 
 function drawAxes(){
@@ -73,20 +78,50 @@ function drawAxes(){
     pop();
 }
 
+// ---------- 90 deg jumps -----------
+// function keyPressed(){
+//     if (keyCode === 70){
+//         cube.rotate('x', -1, (key==='Shift' && keyIsPressed), 90);
+//     } else if (keyCode === 66){
+//         cube.rotate('x', 1, (key==='Shift' && keyIsPressed), 90);
+//     } else if (keyCode === 84){
+//         cube.rotate('y', -1, (key==='Shift' && keyIsPressed), 90);
+//     } else if (keyCode === 68){
+//         cube.rotate('y', 1, (key==='Shift' && keyIsPressed), 90);
+//     } else if (keyCode === 82){
+//         cube.rotate('z', 1, (key==='Shift' && keyIsPressed), 90);
+//     } else if (keyCode === 76){
+//         cube.rotate('z', -1, (key==='Shift' && keyIsPressed), 90);
+//     }
+// }
 
+// ---------- Animated -----------
 function keyPressed(){
-    if (keyCode === 70){
-        cube.rotate('x', -1, (key==='Shift' && keyIsPressed), 30);
-    } else if (keyCode === 66){
-        cube.rotate('x', 1, (key==='Shift' && keyIsPressed), 90);
-    } else if (keyCode === 84){
-        cube.rotate('y', -1, (key==='Shift' && keyIsPressed), 90);
-    } else if (keyCode === 68){
-        cube.rotate('y', 1, (key==='Shift' && keyIsPressed), 90);
-    } else if (keyCode === 82){
-        cube.rotate('z', 1, (key==='Shift' && keyIsPressed), 90);
-    } else if (keyCode === 76){
-        cube.rotate('z', -1, (key==='Shift' && keyIsPressed), 90);
+    if(key==='Shift'){
+        dir = true
+    }
+    if(!cubeAnimationIsActive()){
+        if (keyCode === 70){
+            initCubeAnimation('x', -1, dir, 90);
+        } else if (keyCode === 66){
+            initCubeAnimation('x', 1, dir, 90);
+        } else if (keyCode === 84){
+            initCubeAnimation('y', -1, dir, 90);
+        } else if (keyCode === 68){
+            initCubeAnimation('y', 1, dir, 90);
+        } else if (keyCode === 82){
+            initCubeAnimation('z', 1, dir, 90);
+        } else if (keyCode === 76){
+            initCubeAnimation('z', -1, dir, 90);
+        } else if (keyCode === 88){
+            cube.dump();
+        }
+    }
+}
+
+function keyReleased(){
+    if(key==='Shift'){
+        dir = false
     }
 }
 
@@ -135,4 +170,35 @@ function mouseReleased(){
 function mouseMoved(){
     mX = mouseX;
     mY = mouseY;
+}
+
+let cubeAnimatedRotationState = 0;
+let rotationAxis = 'x'
+let rotationLayer = 1
+let rotationDir = true
+let degPerFrame = 2
+
+
+function initCubeAnimation(axis, layer, cw){
+    cubeAnimatedRotationState = 10;
+    degPerFrame = 90/cubeAnimatedRotationState
+    rotationAxis = axis
+    rotationLayer = layer
+    rotationDir = cw
+}
+
+function cubeAnimatedRotation(){
+    if(cubeAnimatedRotationState == 0){
+        return;
+    }
+    cube.rotate(rotationAxis, rotationLayer, rotationDir, degPerFrame);
+    cubeAnimatedRotationState--;
+    if(cubeAnimatedRotationState == 0){
+        cube.round();
+        console.log("round has gone rounder");
+    }
+}
+
+function cubeAnimationIsActive(){
+    return cubeAnimatedRotationState > 0;
 }

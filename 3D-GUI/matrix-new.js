@@ -91,6 +91,12 @@ class Vector3D{
         }
         this._vector = result;
     }
+
+    round() {
+        for (let i = 0; i < 3; i++) {
+            this._vector[i] = Math.round(this._vector[i]);
+        }
+    }
 }
 
 class Matrix3D{
@@ -162,5 +168,13 @@ class Matrix3D{
         return result;
         }
         this._matrix = result;
+    }
+
+    round() {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                this._matrix[i][j] = Math.round(this._matrix[i][j]);
+            }
+        }
     }
 }
