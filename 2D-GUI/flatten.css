@@ -2,39 +2,35 @@ body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
-    /*background: #525252;*/
     display: grid;
-    grid-columns: auto;
-    grid-row: auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    background: #2b3b4b;
 }
 
-iframe{
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-    border: 0;
+navBar{
+    grid-column: span 3;
+    grid-row: 1;
 }
 
-ul{
+#navbar{
     margin: 0;
     padding: 0;
     list-style: none;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 100%;
 }
 
-li{
-    display: flex;
-    width: 33.4%;
-    height: 10vh;
+#navbar li{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3vh;
+    font-size: 2vw;
     font-weight: bold;
 }
 
-li a{
+#navbar li a{
     text-decoration: none;
     color: #ffffff;
 }
@@ -51,13 +47,103 @@ li a{
     background: #FFAA55;
 }
 
-.botton{
-    display: flex;
-    width: 30%;
-    height: 30%;
+content{
     background: #ffffff;
+    grid-column: 1/4;
+    grid-row: 2/10;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+}
+
+#flatten{
+    grid-column: 2/5;
+    grid-row: 1;
 }
 
 control_panel{
-    background: #fff;
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+}
+
+algorithem_bar{
+    background: #2b3b4b;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr 20fr 5fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr
+}
+
+#algorithem{
+    background: #ffffff;
+    border: none;
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 2vw;
+    width: 100%;
+}
+
+#userScramble{
+    background: #cccccc;
+    border: none;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+tiles_bar{
+    background: #2b3b4b;
+    grid-row: span 4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.tile{
+    margin: 1vh;
+    border-radius: 2vh;
+}
+
+#red{
+    background: #ed3030;
+}
+
+#orange{
+    background: #ffaf1c;
+}
+
+#white{
+    background: #ffffff;
+}
+
+#yellow{
+    background: #f2f215;
+}
+
+#blue{
+    background: #1c5ffe;
+}
+
+#green{
+    background: #58d568;
+}
+
+action_bar{
+   background: #2b3b4b;
+    grid-row: span 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.actionButton{
+    margin-left: 2vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    border-radius: 1vh;
+}
+
+#scramble{
+    margin-right: 2vh;
 }

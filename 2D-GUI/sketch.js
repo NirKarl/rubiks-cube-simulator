@@ -1,14 +1,19 @@
 function setup() {
     angleMode(DEGREES);
-    let cnv = createCanvas(windowWidth, windowHeight);
+    let height = document.getElementById('flatten').offsetHeight;
+    let width = document.getElementById('flatten').offsetWidth;
+    let cnv = createCanvas(width, height);
     cnv.parent('flatten');
-    face = new Face(white, [500, 500]);
-    projectedTile1 = new ProjectedTile(red, "XY", [500, 500]);
-    projectedTile2 = new ProjectedTile(white, "XY", [400, 400]);
-    projectedTile3 = new ProjectedTile(white, "XZ", [400, 400]);
-    projectedTile4 = new ProjectedTile(white, "YZ", [400, 400]);
+    // face = new Face(white, [500, 500]);
+    // projectedTile1 = new ProjectedTile(red, "XY", [500, 500]);
+    // projectedTile2 = new ProjectedTile(white, "XY", [400, 400]);
+    // projectedTile3 = new ProjectedTile(white, "XZ", [400, 400]);
+    // projectedTile4 = new ProjectedTile(white, "YZ", [400, 400]);
     flatten = new Flatten(5);
     projection = new Projected3D(5);
+    height = document.getElementById('flatten').offsetHeight;
+    width = document.getElementById('flatten').offsetWidth;
+    resizeCanvas(width, height);
 }
 
 function draw() {
@@ -23,8 +28,10 @@ function draw() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  flatten.updatePos();
+    let height = document.getElementById('flatten').offsetHeight;
+    let width = document.getElementById('flatten').offsetWidth;
+    resizeCanvas(width, height);
+    flatten.updatePos();
 }
 
 function mousePressed() {

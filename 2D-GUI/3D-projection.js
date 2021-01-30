@@ -1,5 +1,8 @@
-const yzAngle = 135;
+const yzAngle = 115;
 const xyAngle = 105;
+
+let frameWidth = document.getElementById('flatten').offsetWidth;
+let frameHeight = document.getElementById('flatten').offsetHeight;
 
 function posSideOfLine(mpos, poses){
     console.log(mpos)
@@ -179,8 +182,8 @@ class XZFace{
 
 class Projected3D{
     constructor(state){
-        let origin = [windowWidth/2, windowHeight/2 - windowHeight/5];
         let offset = 7*globalTileSize;
+        let origin = [frameWidth/2 + globalTileSize, frameHeight/2 - globalTileSize];
         this.faces = [
             new YZFace(softRed, origin),
             new XYFace(softGreen, origin),

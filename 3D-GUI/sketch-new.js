@@ -1,5 +1,8 @@
 function setup() {
-    createCanvas(windowWidth, windowHeight, WEBGL);
+    let height = document.getElementById('cube').offsetHeight;
+    let width = document.getElementById('cube').offsetWidth;
+    let cnv = createCanvas(width, height, WEBGL);
+    cnv.parent('cube');
     angleMode(DEGREES);
     cam = createCamera();
     camDist = 600;
@@ -18,6 +21,11 @@ function setup() {
     rotationSteps = 0;
     frameRate(60)
     dir = false
+
+    // resizing canvas - for some reson the first loading gets the wrong sizes!
+    height = document.getElementById('cube').offsetHeight;
+    width = document.getElementById('cube').offsetWidth;
+    resizeCanvas(width, height);
 }
 
 function draw() {
@@ -141,7 +149,9 @@ function keyReleased(){
 // }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+    let height = document.getElementById('cube').offsetHeight;
+    let width = document.getElementById('cube').offsetWidth;
+    resizeCanvas(width, height);
 }
 
 function mouseDragged(){
@@ -162,6 +172,30 @@ function mouseDragged(){
         }
     }
 }
+
+// function mouseDragged(){
+//     button = mouseButton;
+//     if (button===CENTER){
+//         if (mPressed === false){
+//             mX = mouseX;
+//             my = mouseY;
+//             mAlpha = camAlpha;
+//             mBeta = camBeta;
+//             mPressed = true;
+//         } else{
+//             camAlpha = mAlpha + (mouseX - mX)*(360/windowWidth)
+//             camBeta = mBeta + (mouseY - mY)*(180/windowHeight)
+//             let height = document.getElementById('cube').offsetHeight;
+//             let width = document.getElementById('cube').offsetWidth;
+//             tempmX = mouseX / width - 0.5;
+//             tempmY = mouseY / height - 0.5;
+//             camX = camDist*sin(tempmX*360);
+//             console.log(camDist)
+//             camY = camDist*sin(tempmY*360);
+//             camZ = camDist*cos(tempmX*360)*cos(tempmY*360)
+//         }
+//     }
+// }
 
 function mouseReleased(){
     mPressed = false;
