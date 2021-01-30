@@ -33,4 +33,4 @@ const globalFaceSize = (3*globalTileSize) + (3*globalSpacing);
 
 const backgorund2D = [100, 110, 120];
 const backgorund3D = [120, 100, 110];
-const backgroundCameras = [110, 120, 100]
+const backgroundCameras = [110, 120, 100];

@@ -135,15 +135,19 @@ action_bar{
     grid-row: span 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-gap: 2vw;
 }
 
 .actionButton{
-    margin-left: 2vh;
+    border-radius: 1vh;
     margin-top: 2vh;
     margin-bottom: 2vh;
-    border-radius: 1vh;
+}
+
+#solve{
+    margin-left: 2vw;
 }
 
 #scramble{
-    margin-right: 2vh;
+    margin-right: 2vw;
 }

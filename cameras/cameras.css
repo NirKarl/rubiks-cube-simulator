@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 8fr;
+    background: #dddddd;
+}
+
+navBar{
+    grid-column: span 3;
+    grid-row: 1;
+}
+
+#navbar{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 100%;
+}
+
+#navbar li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw;
+    font-weight: bold;
+}
+
+#navbar li a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#GUI2D{
+    background: #2981E5;
+}
+
+#GUI3D{
+    background: #D75151;
+}
+
+#CAMERAS{
+    background: #FFAA55;
+}

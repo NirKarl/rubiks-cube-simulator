@@ -14,6 +14,9 @@ function setup() {
     height = document.getElementById('flatten').offsetHeight;
     width = document.getElementById('flatten').offsetWidth;
     resizeCanvas(width, height);
+    flattenDisplay = false;
+    projDisplay = true;
+    selectedColor = white;
 }
 
 function draw() {
@@ -24,7 +27,12 @@ function draw() {
     // projectedTile2.draw();
     // projectedTile3.draw();
     // projectedTile4.draw();
-    projection.draw();
+    if(projDisplay){
+        projection.draw();
+    } else if(flattenDisplay){
+        flatten.draw();
+    }
+
 }
 
 function windowResized() {
@@ -37,32 +45,19 @@ function windowResized() {
 function mousePressed() {
     // console.log("working");
     for (let faceIndex = 0; faceIndex < projection.faces.length; faceIndex++) {
-        console.log(projection.faces[faceIndex]);
+        // console.log(projection.faces[faceIndex]);
         for (let tilesRowIndex = 0; tilesRowIndex < projection.faces[faceIndex].tiles.length; tilesRowIndex++) {
             for (let tileIndex = 0; tileIndex < projection.faces[faceIndex].tiles[tilesRowIndex].length; tileIndex++) {
-                console.log(projection.faces[faceIndex].tiles[tilesRowIndex][tileIndex].color);
+                // console.log(projection.faces[faceIndex].tiles[tilesRowIndex][tileIndex].color);
                 if(projection.faces[faceIndex].tiles[tilesRowIndex][tileIndex].isInRect([mouseX, mouseY])){
-                    console.log("equal");
-                    projection.faces[faceIndex].tiles[tilesRowIndex][tileIndex].color = grey;
+                    // console.log("equal");
+                    projection.faces[faceIndex].tiles[tilesRowIndex][tileIndex].color = selectedColor;
                 }
             }
         }
     }
-    // let rect1 = projectedTile1.isInRect([mouseX, mouseY]);
-    // let rect2 = projectedTile2.isInRect([mouseX, mouseY]);
-    // let rect3 = projectedTile3.isInRect([mouseX, mouseY]);
-    // let rect4 = projectedTile4.isInRect([mouseX, mouseY]);
-    // if(rect1){
-    //     projectedTile1.color = blue;
-    // }
-    // if(rect2){
-    //     projectedTile2.color = blue;
-    // }
-    // if(rect3){
-    //     projectedTile3.color = blue;
-    // }
-    // if(rect4){
-    //     projectedTile4.color = blue;
-    // }
 }
 
+function changeSelectedColor(newColor){
+    selectedColor = newColor;
+}

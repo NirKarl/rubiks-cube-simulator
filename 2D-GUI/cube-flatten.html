@@ -12,7 +12,7 @@
       <ul id="navbar">
         <li id="GUI3D"><a href="..\3D-GUI\cube.html">3D VIEW</a></li>
         <li id="GUI2D"><a href="">2D VIEW</a></li>
-        <li id="CAMERAS"><a href="">LIVE VIEW</a></li>
+        <li id="CAMERAS"><a href="..\cameras\cameras.html">LIVE VIEW</a></li>
       </ul>
     </navBar>
     <content>
@@ -23,16 +23,16 @@
           <input type="button" id="userScramble">
         </algorithem_bar>
         <tiles_bar>
-          <input type="button" id="red" class="tile">
-          <input type="button" id="orange" class="tile">
-          <input type="button" id="yellow" class="tile">
-          <input type="button" id="white" class="tile">
-          <input type="button" id="blue" class="tile">
-          <input type="button" id="green" class="tile">
+          <button type="button" id="red" class="tile" onclick="changeSelectedColor(softRed)"></button>
+          <button type="button" id="orange" class="tile" onclick="changeSelectedColor(softOrange)"></button>
+          <button type="button" id="yellow" class="tile" onclick="changeSelectedColor(softYellow)"></button>
+          <button type="button" id="white" class="tile" onclick="changeSelectedColor(white)"></button>
+          <button type="button" id="blue" class="tile" onclick="changeSelectedColor(softBlue)"></button>
+          <button type="button" id="green" class="tile" onclick="changeSelectedColor(softGreen)"></button>
         </tiles_bar>
         <action_bar>
-          <input type="button" id="solve" class="actionButton"  >
-          <input type="button" id="scramble" class="actionButton">
+          <button type="button" id="solve" class="actionButton">SOLVE</button>
+          <button type="button" id="scramble" class="actionButton">SCRAMBLE</button>
         </action_bar>
       </control_panel>
     </content>

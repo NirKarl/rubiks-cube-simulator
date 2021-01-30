@@ -1,3 +1,6 @@
+// let frameWidth = document.getElementById('flatten').offsetWidth;
+// let frameHeight = document.getElementById('flatten').offsetHeight;
+
 class Tile{
     constructor(color, position, size=globalTileSize){
         this.size = size;
@@ -60,7 +63,8 @@ class Face{
 
 class Flatten{
     constructor(state){
-        this.pos = [windowWidth/2 - (4*globalFaceSize)/2, windowHeight/2 - (3*globalFaceSize)/2 - windowHeight/5];
+        // this.pos = [frameWidth/2 - (4*globalFaceSize)/2, frameHeight/2 - (3*globalFaceSize)/2 - frameHeight/5];
+        this.pos = [frameWidth/5, frameHeight/5];
         this.faces = []
         for(let i = 0; i < 6; i++){
             let x;
@@ -80,7 +84,8 @@ class Flatten{
     }
 
     updatePos(){
-        this.pos = [windowWidth/2 - (4*globalFaceSize)/2, windowHeight/2 - (3*globalFaceSize)/2 - windowHeight/5];
+        // this.pos = [frameWidth/2 - (4*globalFaceSize)/2, frameHeight/2 - (3*globalFaceSize)/2 - frameHeight/5];
+        this.pos = [frameWidth/2, frameHeight/2];
         for(let i = 0; i < 6; i++){
             let x;
             let y;

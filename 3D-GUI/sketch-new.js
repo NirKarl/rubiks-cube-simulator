@@ -113,7 +113,7 @@ function keyPressed(){
             initCubeAnimation('x', -1, dir, 90);
         } else if (keyCode === 66){
             initCubeAnimation('x', 1, dir, 90);
-        } else if (keyCode === 84){
+        } else if (keyCode === 85){
             initCubeAnimation('y', -1, dir, 90);
         } else if (keyCode === 68){
             initCubeAnimation('y', 1, dir, 90);
